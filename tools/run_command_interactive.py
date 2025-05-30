@@ -1,31 +1,33 @@
-import os
-import shutil
 import subprocess
-import pexpect
+from typing import Optional
 
-def run_command_interactive(command: str, timeout: int = 30) -> str:
+def run_command_interactive(command: str, timeout: int = 60, input_text: Optional[str] = None) -> str:
     """
-    Executes a shell command and interacts with prompts using AI feedback loops.
+    Executes a shell command with optional input and timeout handling.
+
+    Args:
+        command (str): The shell command to execute.
+        timeout (int): Timeout in seconds for command execution.
+        input_text (str, optional): Input text to pass to the command (for prompts).
+
+    Returns:
+        str: Output or error message from the command.
     """
     try:
-        child = pexpect.spawn(command, encoding='utf-8', timeout=timeout)
-        output = ""
-
-        while True:
-            i = child.expect([pexpect.EOF, pexpect.TIMEOUT, r'[\?\:>]'])  # Detect prompt-like patterns
-            output += child.before
-
-            if i == 0:  # EOF
-                break
-            elif i == 1:  # Timeout
-                output += "\n[Timeout waiting for input]\n"
-                break
-            elif i == 2:  # Detected prompt
-                prompt = child.after.strip()
-                # Return the prompt to the model for a response
-                return f"[PROMPT] {prompt}\n{output}"
-
-        return output.strip()
-
+        result = subprocess.run(
+            command,
+            shell=True,
+            input=input_text,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=timeout,
+            check=False  # Don't raise exception automatically
+        )
+        output = result.stdout.strip()
+        error = result.stderr.strip()
+        return output if output else error
+    except subprocess.TimeoutExpired:
+        return "[ERROR] Command timed out. Use flags to avoid interaction."
     except Exception as e:
-        return f"[ERROR] {str(e)}"
+        return f"[ERROR] Unexpected error: {str(e)}"
