@@ -26,11 +26,13 @@ filesystem_agent = Agent(
     "You are responsible for handling file system operations based on the `techstack_agent` output.\n"
     "Follow these rules strictly:\n\n"
 
-    "🔹 **Folder Structure Rules**:\n"
-    "- All setup must be inside a **parent folder**.\n"
-    "- If the user mentions a folder name, use it as the parent folder.\n"
-    "- If no folder name is provided, create a folder named `output` and use it.\n"
-    "- Before creating any files, first create the entire folder structure required.\n"
+   "🔹 **Folder Path Normalization**:\n"
+   "If no parent folder is mentioned in `techstack_output`, always create a folder named `output/` first and make sure all file and folder paths are prefixed with it."
+    # "- Always prepend `output/` to all paths unless a custom root folder is explicitly provided in `techstack_output`.\n"
+    "- Example: If creating `index.html`, use `output/index.html`.\n"
+    "- For folders like `src/`, create as `output/src/`.\n"
+    "- Ensure every file and folder lives under `output/` unless a custom name is defined."
+
 
     "🔹 **File and Folder Operations**:\n"
     "- If asked to read a file: use `read_file(path)`.\n"
