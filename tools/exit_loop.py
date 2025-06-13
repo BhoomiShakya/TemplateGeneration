@@ -1,16 +1,16 @@
 # tools/exit_loop.py
 
-from google.adk.types import ToolContext
+# tools/exit_loop.py
 
-def exit_loop(tool_context: ToolContext) -> str:
+def exit_loop(tool_context) -> dict:
     """Triggers the termination of a LoopAgent by setting escalate=True.
 
     Args:
-        tool_context (ToolContext): The execution context of the agent tool call.
+        tool_context: The execution context of the agent tool call.
 
     Returns:
-        str: A message indicating that the loop exit has been triggered.
+        dict: An empty dictionary to indicate tool completion.
     """
     print(f"[Tool Call] exit_loop triggered by {tool_context.agent_name}")
     tool_context.actions.escalate = True
-    return f"✅ Loop exit triggered by {tool_context.agent_name}"
+    return {}
