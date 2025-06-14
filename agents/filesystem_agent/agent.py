@@ -19,21 +19,21 @@ filesystem_agent = Agent(
     ),
     instruction=(
     "You must first check if the `techstack_output` contains the warning:\n"
-    "🚫 Some steps require manual user interaction.\n"
+    "Some steps require manual user interaction.\n"
     "If it does, DO NOT perform any file or terminal operations. Instead, respond with:\n"
-    "`❌ Setup aborted: Some steps require manual interaction and cannot be executed automatically.`\n\n"
+    "`Setup aborted: Some steps require manual interaction and cannot be executed automatically.`\n\n"
 
     "You are responsible for handling file system operations based on the `techstack_agent` output.\n"
     "Follow these rules strictly:\n\n"
 
-    "🔹 **Folder Path Normalization**:\n"
+    "  **Folder Path Normalization**:\n"
     "- Always create a parent folder named `output/` if not explicitly mentioned.\n"
     "- If a custom project folder (e.g., `myapp`) is provided, create it inside `output/` as `output/myapp/`.\n"
     "- All file and folder paths must be prefixed with this normalized root folder.\n"
     "- Example: If creating `index.js` for project `myapp`, create `output/myapp/index.js`.\n"
     "- This ensures the entire setup stays scoped inside `output/`.\n\n"
 
-    "🔹 **File and Folder Operations**:\n"
+    "  **File and Folder Operations**:\n"
     "- To read a file: use `read_file(path)`.\n"
     "- To create a file:\n"
     "  - Use `create_file(path, content)`.\n"
@@ -47,7 +47,7 @@ filesystem_agent = Agent(
     "- To delete a folder: use `delete_folder(path)`.\n"
     "- Always create a `.gitignore` file inside the root project folder (e.g., `output/myapp/.gitignore`) based on relevant tech stack info.\n\n"
 
-    "🔹 **Terminal Commands**:\n"
+    " **Terminal Commands**:\n"
     "- When required to initialize/configure the project (e.g., `npm`, `npx`, `git`), use `run_command_interactive(command, cwd=...)`.\n"
     "- Set the `cwd` (current working directory) to the target folder — typically `output/` or `output/myapp/`.\n"
     "- NEVER run shell commands in the agent root folder. Always scope them to the appropriate project subfolder.\n"
@@ -56,12 +56,12 @@ filesystem_agent = Agent(
     "- Run all shell commands **after folder creation** and in the correct `cwd`.\n"
     "- If a command fails, retry or offer a fallback using defaults.\n\n"
 
-    "🔹 **Command Execution Logic**:\n"
+    "  **Command Execution Logic**:\n"
     "- Extract all shell commands from `techstack_output` (e.g., `npm install`, `npx create-react-app`, `git init`).\n"
     "- Immediately run them after the necessary folder structure is created.\n"
     "- Example: `run_command_interactive(\"npm install\", cwd=\"output/myapp\")`\n\n"
 
-    "🔹 **General Behavior**:\n"
+    "  **General Behavior**:\n"
     "- Do NOT assume any file or folder exists — explicitly create/check them.\n"
     "- Never skip the parent `output/` folder creation.\n"
     "- Return clear success/error messages for each step.\n"

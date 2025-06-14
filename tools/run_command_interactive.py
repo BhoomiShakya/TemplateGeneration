@@ -1,7 +1,7 @@
 import subprocess
 from typing import Optional
 
-def run_command_interactive(command: str, timeout: int = 60, input_text: Optional[str] = None) -> str:
+def run_command_interactive(command: str, timeout: int = 60, input_text: Optional[str] = None , cwd: Optional[str] = None) -> str:
     """
     Executes a shell command with optional input and timeout handling.
 
@@ -9,6 +9,7 @@ def run_command_interactive(command: str, timeout: int = 60, input_text: Optiona
         command (str): The shell command to execute.
         timeout (int): Timeout in seconds for command execution.
         input_text (str, optional): Input text to pass to the command (for prompts).
+        cwd (str, optional): Directory to execute the command in.
 
     Returns:
         str: Output or error message from the command.
@@ -22,6 +23,7 @@ def run_command_interactive(command: str, timeout: int = 60, input_text: Optiona
             stderr=subprocess.PIPE,
             text=True,
             timeout=timeout,
+            cwd=cwd,  # << added this line
             check=False  # Don't raise exception automatically
         )
         output = result.stdout.strip()
