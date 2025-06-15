@@ -23,8 +23,8 @@ def run_command_interactive(command: str, timeout: int = 60, input_text: Optiona
             stderr=subprocess.PIPE,
             text=True,
             timeout=timeout,
-            cwd=cwd,  # << added this line
-            check=False  # Don't raise exception automatically
+            cwd=cwd,  
+            check=False 
         )
         output = result.stdout.strip()
         error = result.stderr.strip()
