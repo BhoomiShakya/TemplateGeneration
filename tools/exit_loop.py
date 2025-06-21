@@ -1,7 +1,3 @@
-# tools/exit_loop.py
-
-# tools/exit_loop.py
-
 def exit_loop(tool_context) -> dict:
     """Triggers the termination of a LoopAgent by setting escalate=True.
 
